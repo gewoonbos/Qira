@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <style>
+
+   body
+    {
+     color: silver;
+
+     font-family: Arial;
+    }
+
+   table
+    {
+     border-collapse: collapse;
+    }
+
+   table td
+    {
+     border: 1px solid silver;
+
+     width: 2.5em;
+     height: 2.5em;
+
+     text-align: center;
+    }
+
+   table td.select
+    {
+     background-color: red;
+
+     color: white;
+    }
+
+  </style>
+
+  <script type="text/javascript">
+
+   var intX_Maximum = 13;
+   var intY_Maximum = 20;
+   var intXY_Maximum = intX_Maximum * intY_Maximum;
+
+   var strTable_Cell_ID_Previous = null;
+
+   var dtZero = new Date('1970-05-19');
+
+   function main()
+    {
+     table();
+     calculate('1981-09-15');
+    }
+
+   function table()
+    {
+     var tTable = document.getElementById('table');
+
+     var strTable_Content = '<table>';
+
+     for (var intY = 0; intY < intY_Maximum; intY++)
+      {
+       strTable_Content += '<tr>';
+
+       for (var intX = 0; intX < intX_Maximum; intX++)
+        {
+         strTable_Content += '<td id="' + intY.toString() + '-' + intX.toString() + '">';
+
+         strTable_Content += intY.toString() + '/' + intX.toString();
+
+         strTable_Content += '</td>';
+        }
+
+       strTable_Content += '</tr>';
+      }
+
+     strTable_Content += '</table>';
+
+     tTable.innerHTML = strTable_Content;
+    }
+
+   function calculate(strDate)
+    {
+     var dtBirth = new Date(strDate);
+
+     // Timespan between date of birth and zero.
+     var intDay = dtBirth.getTime() - dtZero.getTime();
+
+     // Timespan in seconds.
+     intDay = intDay / 1000;
+
+     // Timespan in minutes.
+     intDay = intDay / 60;
+
+     // Timespan in hours.
+     intDay = intDay / 60;
+
+     // Timespan in days.
+     intDay = intDay / 24;
+
+     // The amount of times the table maximum is reached. (15)
+     intToo_Much = Math.floor(intDay / intXY_Maximum);
+
+     // The offset in the table.
+     intDay -= (intToo_Much * intXY_Maximum);
+
+
+     //
+     var intX = Math.floor(intDay / intY_Maximum);
+     var intY = intDay - (intX * intY_Maximum);
+
+     var strTable_Cell_ID = intY + '-' + intX;
+
+
+     // Clear previous cell..
+     var tcTable_Cell;
+
+     if (strTable_Cell_ID_Previous)
+      {
+       tcTable_Cell = document.getElementById(strTable_Cell_ID_Previous);
+
+       tcTable_Cell.className = '';
+      }
+
+
+     // Select new cell..
+     tcTable_Cell = document.getElementById(strTable_Cell_ID);
+
+     tcTable_Cell.className = 'select';
+
+
+     strTable_Cell_ID_Previous = strTable_Cell_ID;
+    }
+
+  </script>
+
+ </head>
+ <body onload="main();">
+
+  <input type="date" name="" value="" onchange="calculate(this.value, 'purple');" />
+
+  <div id="table">
+  <div>
+
+ </body>
+</html>
